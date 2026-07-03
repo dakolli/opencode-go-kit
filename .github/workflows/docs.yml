@@ -30,6 +30,7 @@ jobs:
       - name: Generate Static HTML (API Only)
         run: |
           mkdir -p public
+          touch public/.nojekyll
           doc2go -home github.com/dakolli/opencode-go-kit/pkg/api -out public/ ./pkg/api
 
       - name: Upload Artifact
