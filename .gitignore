@@ -1,0 +1,10 @@
+/.env
+/docker-compose.yml
+
+volumes/workspace_one/*
+!volumes/workspace_one/.gitkeep
+
+.notes/
+bin/
+
+/vendor/

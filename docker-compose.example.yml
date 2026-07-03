@@ -1,0 +1,40 @@
+services:
+  opencode-go-kit-1:
+    # Allows building the image directly via docker compose
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+        USER_NAME: ${USERNAME:-opencode}
+        GROUP_NAME: ${USERNAME:-opencode}
+    # Standard image name for the build
+    image: opencode-go-kit:latest
+    
+    ports:
+      # SECURE: Explicitly binds ONLY to the host's loopback interface (localhost)
+      # Change to your tailscale/vpn or whatever you want.. 
+      - "127.0.0.1:4002:4096"
+      
+    volumes:
+      # Persistent storage volume for workspace one
+      - "${VOLUME_PATH:-./volumes/workspace_one}:/workspace"
+      
+    environment:
+      # Server password set directly in the docker-compose file
+      # - OPENCODE_SERVER_PASSWORD=${WORKSPACE_PASSWORD:-pass1}
+      - OPENCODE_SERVER_PASSWORD=pass1
+      
+    restart: unless-stopped
+
+  # Example of a second parallel container using a different port, volume, and password
+  # opencode-go-kit-2:
+  #   image: opencode-go-kit:latest
+  #   ports:
+  #     - "127.0.0.1:4003:4096"
+  #   volumes:
+  #     - "./volumes/workspace_two:/workspace"
+  #   environment:
+  #     - OPENCODE_SERVER_PASSWORD=pass2
+  #   restart: unless-stopped

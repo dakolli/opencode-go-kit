@@ -1,0 +1,45 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install doc2go
+        run: go install go.abhg.dev/doc2go@latest
+
+      - name: Generate Static HTML (API Only)
+        run: |
+          mkdir public
+          # We run doc2go strictly on the 'pkg/api' directory so that the
+          # complex generated schemas/decoders inside 'pkg/client' are excluded
+          # from our documentation website.
+          doc2go -out public/ ./pkg/api
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

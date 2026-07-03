@@ -1,0 +1,62 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Run Tests & Verify Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so we can commit/push if needed
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Run Package Tests
+        run: |
+          GOWORK=off go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Verify Wrapper Coverage is 100%
+        run: |
+          # Run the specific API wrapper test and ensure it reports 100.00% coverage
+          TEST_OUT=$(GOWORK=off go test -v -count=1 ./pkg/api 2>&1)
+          echo "$TEST_OUT"
+          if ! echo "$TEST_OUT" | grep -F -q "100.00%"; then
+            echo "Error: API wrappers are not at 100.00% coverage. Please run 'make generate-api' locally."
+            exit 1
+          fi
+
+      - name: Update README.md API List
+        # Only run this on actual pushes to main, not on pull requests
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          make update-readme
+
+      - name: Commit and Push README.md Updates
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if README.md has changed
+          if ! git diff --quiet README.md; then
+            echo "API coverage list in README.md is outdated. Committing updates..."
+            git add README.md
+            git commit -m "docs: auto-update API endpoint coverage list"
+            git push
+          else
+            echo "README.md coverage list is already up to date."
+          fi
