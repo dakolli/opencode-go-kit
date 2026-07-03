@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
-  
+
 permissions:
   contents: read
   pages: write
@@ -32,10 +32,8 @@ jobs:
         run: go install go.abhg.dev/doc2go@latest
 
       - name: Generate API reference
-        # We pass your root module path to -home. doc2go automatically 
-        # outputs everything into a directory called "_site"
         run: |
-          doc2go -home github.com/dakolli/opencode-go-kit ./...
+          doc2go -home github.com/dakolli/opencode-go-kit ./pkg/api/...
 
       - name: Upload pages
         uses: actions/upload-pages-artifact@v3
@@ -46,6 +44,12 @@ jobs:
   publish:
     name: Publish website
     needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
