@@ -9,11 +9,13 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
+    name: Build website
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -23,21 +25,28 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 'stable'
+          cache: true
 
       - name: Install doc2go
         run: go install go.abhg.dev/doc2go@latest
 
-      - name: Generate Static HTML (API Only)
+      - name: Generate API reference
+        # We pass your root module path to -home. doc2go automatically 
+        # outputs everything into a directory called "_site"
         run: |
-          mkdir -p public
-          touch public/.nojekyll
-          doc2go -home github.com/dakolli/opencode-go-kit/pkg/api -out public/ ./pkg/api
+          doc2go -home github.com/dakolli/opencode-go-kit ./...
 
-      - name: Upload Artifact
+      - name: Upload pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'public'
+          # doc2go automatically puts the fully styled site here
+          path: '_site'
 
+  publish:
+    name: Publish website
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
