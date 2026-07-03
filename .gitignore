@@ -1,5 +1,6 @@
 /.env
 /docker-compose.yml
+/public
 
 volumes/workspace_one/*
 !volumes/workspace_one/.gitkeep

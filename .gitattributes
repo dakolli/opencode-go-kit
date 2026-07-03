@@ -1,0 +1,5 @@
+# Mark documentation directory as generated so it is excluded from GitHub language stats
+public/** linguist-generated=true
+
+# Mark all generated Go files from ogen and tools/generator as generated
+*_gen.go linguist-generated=true
