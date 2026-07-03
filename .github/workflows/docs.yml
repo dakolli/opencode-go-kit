@@ -28,20 +28,29 @@ jobs:
           go-version: 'stable'
           cache: true
 
-      - name: Install doc2go
-        run: go install go.abhg.dev/doc2go@latest
+      - name: Install gomarkdoc
+        run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 
-      - name: Generate API reference
+      - name: Generate API reference Markdown
         run: |
-          doc2go -home github.com/dakolli/opencode-go-kit ./pkg/api/...
+          mkdir -p docs
+          gomarkdoc --output docs/api.md ./pkg/api
+          cp README.md docs/index.md
 
-      - name: Apply custom styles
-        run: cp .github/docs-custom.css _site/_/css/main.css
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
+
+      - name: Build documentation site
+        run: mkdocs build -f mkdocs.yml -d _site
 
       - name: Upload pages
         uses: actions/upload-pages-artifact@v5
         with:
-          # doc2go automatically puts the fully styled site here
           path: '_site'
 
   publish:
