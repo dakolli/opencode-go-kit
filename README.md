@@ -2,6 +2,13 @@
 
 A Go API for interacting with the OpenCode API.
 
+## Requirements
+
+- **Go**: 1.26.4+ (to compile, run tests, and generate client bindings)
+
+## Optional Docker Opencode containers: 
+- **Docker & Docker Compose**: To build and host the OpenCode agent locally (or connect to your existing opencode)
+
 ## Installation
 
 To integrate the OpenCode Go Kit into an existing Go project, run:
@@ -32,7 +39,7 @@ func main() {
 
 	// 1. Create client configuration (either pass values explicitly or let them fallback to environment variables)
 	config, err := api.NewClientCFG(
-		"http://localhost:4002", // OpenCode Server URL
+		"http://localhost:4096", // OpenCode Server URL
 		"opencode",              // Username
 		"pass1",                 // Password
 	)
@@ -60,10 +67,7 @@ func main() {
 }
 ```
 
-## Requirements
 
-- **Go**: 1.26.4+ (to compile, run tests, and generate client bindings)
-- **Docker & Docker Compose**: To build and host the OpenCode agent locally (or connect to your existing opencode)
 
 ## Getting Started with Docker
 
