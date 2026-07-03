@@ -33,7 +33,10 @@ jobs:
           # We run doc2go strictly on the 'pkg/api' directory so that the
           # complex generated schemas/decoders inside 'pkg/client' are excluded
           # from our documentation website.
-          doc2go -out public/ ./pkg/api
+          # We pass -home to place the 'pkg/api' package documentation directly at the root (index.html)
+          # so that people visiting the documentation site see the beautifully-formatted
+          # API docs immediately instead of a generic directory index.
+          doc2go -home github.com/dakolli/opencode-go-kit/pkg/api -out public/ ./pkg/api
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
