@@ -8,7 +8,12 @@ A Go API for interacting with the OpenCode API.
 
 ## Optional Docker Opencode containers: 
 - **Docker & Docker Compose**: To build and host the OpenCode agent locally (or connect to your existing opencode)
-
+  
+  If you want to use Opencode in Docker cp config below and fill out the config to your likeing
+  See documenation for OpenCode [config](https://opencode.ai/docs/config/)
+```bashV
+# - cp ./opencode-example.jsonc ./volumes/workspace_one/opencode.jsonc
+```
 ## Installation
 
 To integrate the OpenCode Go Kit into an existing Go project, run:
@@ -169,88 +174,49 @@ We have wrapped **83 out of 83** (100.00%) OpenAPI client methods in our clean, 
 
 ### Covered Endpoints
 
-- [x] `AppAgents`
-- [x] `AppSkills`
-- [x] `CommandList`
-- [x] `ConfigProviders`
-- [x] `ExperimentalCapabilitiesGet`
-- [x] `ExperimentalConsoleGet`
-- [x] `ExperimentalConsoleListOrgs`
-- [x] `ExperimentalConsoleSwitchOrg`
-- [x] `ExperimentalProjectCopyGenerateName`
-- [x] `ExperimentalResourceList`
-- [x] `ExperimentalSessionList`
-- [x] `ExperimentalWorkspaceAdapterList`
-- [x] `ExperimentalWorkspaceStatus`
-- [x] `ExperimentalWorkspaceSyncList`
-- [x] `FileList`
-- [x] `FileRead`
-- [x] `FileStatus`
-- [x] `FindFiles`
-- [x] `FindSymbols`
-- [x] `FindText`
-- [x] `FormatterStatus`
-- [x] `GlobalDispose`
-- [x] `GlobalHealth`
-- [x] `InstanceDispose`
-- [x] `LspStatus`
-- [x] `McpAuthRemove`
-- [x] `McpConnect`
-- [x] `McpDisconnect`
-- [x] `PathGet`
-- [x] `PermissionList`
-- [x] `ProjectCurrent`
-- [x] `ProjectDirectories`
-- [x] `ProjectInitGit`
-- [x] `ProjectList`
-- [x] `ProviderList`
-- [x] `PtyConnect`
-- [x] `PtyConnectToken`
-- [x] `PtyGet`
-- [x] `PtyList`
-- [x] `PtyRemove`
-- [x] `PtyShells`
-- [x] `QuestionList`
-- [x] `SessionDiff`
-- [x] `SessionList`
-- [x] `SessionShare`
-- [x] `SessionUnshare`
-- [x] `SyncStart`
-- [x] `TuiClearPrompt`
-- [x] `TuiControlNext`
-- [x] `TuiControlResponse`
-- [x] `TuiOpenHelp`
-- [x] `TuiOpenModels`
-- [x] `TuiOpenSessions`
-- [x] `TuiOpenThemes`
-- [x] `TuiShowToast`
-- [x] `TuiSubmitPrompt`
-- [x] `V2CommandList`
-- [x] `V2CredentialRemove`
-- [x] `V2CredentialUpdate`
-- [x] `V2FsFind`
-- [x] `V2FsList`
-- [x] `V2FsRead`
-- [x] `V2HealthGet`
-- [x] `V2IntegrationAttemptCancel`
-- [x] `V2LocationGet`
-- [x] `V2PermissionRequestList`
-- [x] `V2PermissionSavedList`
-- [x] `V2PermissionSavedRemove`
-- [x] `V2PtyConnect`
-- [x] `V2PtyConnectToken`
-- [x] `V2PtyCreate`
-- [x] `V2PtyGet`
-- [x] `V2PtyList`
-- [x] `V2PtyRemove`
-- [x] `V2PtyUpdate`
-- [x] `V2QuestionRequestList`
-- [x] `V2SessionActive`
-- [x] `V2SessionCreate`
-- [x] `V2SkillList`
-- [x] `VcsDiff`
-- [x] `VcsDiffRaw`
-- [x] `VcsGet`
-- [x] `VcsStatus`
+| | |
+| --- | --- |
+| - [x] [`AppAgents`](https://dakolli.github.io/opencode-go-kit/api/#func-api-appagents) | - [x] [`SessionDiff`](https://dakolli.github.io/opencode-go-kit/api/#func-api-sessiondiff) |
+| - [x] [`AppSkills`](https://dakolli.github.io/opencode-go-kit/api/#func-api-appskills) | - [x] [`SessionList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-sessionlist) |
+| - [x] [`CommandList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-commandlist) | - [x] [`SessionShare`](https://dakolli.github.io/opencode-go-kit/api/#func-api-sessionshare) |
+| - [x] [`ConfigProviders`](https://dakolli.github.io/opencode-go-kit/api/#func-api-configproviders) | - [x] [`SessionUnshare`](https://dakolli.github.io/opencode-go-kit/api/#func-api-sessionunshare) |
+| - [x] [`ExperimentalCapabilitiesGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalcapabilitiesget) | - [x] [`SyncStart`](https://dakolli.github.io/opencode-go-kit/api/#func-api-syncstart) |
+| - [x] [`ExperimentalConsoleGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalconsoleget) | - [x] [`TuiClearPrompt`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuiclearprompt) |
+| - [x] [`ExperimentalConsoleListOrgs`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalconsolelistorgs) | - [x] [`TuiControlNext`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuicontrolnext) |
+| - [x] [`ExperimentalConsoleSwitchOrg`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalconsoleswitchorg) | - [x] [`TuiControlResponse`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuicontrolresponse) |
+| - [x] [`ExperimentalProjectCopyGenerateName`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalprojectcopygeneratename) | - [x] [`TuiOpenHelp`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuiopenhelp) |
+| - [x] [`ExperimentalResourceList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalresourcelist) | - [x] [`TuiOpenModels`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuiopenmodels) |
+| - [x] [`ExperimentalSessionList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalsessionlist) | - [x] [`TuiOpenSessions`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuiopensessions) |
+| - [x] [`ExperimentalWorkspaceAdapterList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalworkspaceadapterlist) | - [x] [`TuiOpenThemes`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuiopenthemes) |
+| - [x] [`ExperimentalWorkspaceStatus`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalworkspacestatus) | - [x] [`TuiShowToast`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuishowtoast) |
+| - [x] [`ExperimentalWorkspaceSyncList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-experimentalworkspacesynclist) | - [x] [`TuiSubmitPrompt`](https://dakolli.github.io/opencode-go-kit/api/#func-api-tuisubmitprompt) |
+| - [x] [`FileList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-filelist) | - [x] [`V2CommandList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2commandlist) |
+| - [x] [`FileRead`](https://dakolli.github.io/opencode-go-kit/api/#func-api-fileread) | - [x] [`V2CredentialRemove`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2credentialremove) |
+| - [x] [`FileStatus`](https://dakolli.github.io/opencode-go-kit/api/#func-api-filestatus) | - [x] [`V2CredentialUpdate`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2credentialupdate) |
+| - [x] [`FindFiles`](https://dakolli.github.io/opencode-go-kit/api/#func-api-findfiles) | - [x] [`V2FsFind`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2fsfind) |
+| - [x] [`FindSymbols`](https://dakolli.github.io/opencode-go-kit/api/#func-api-findsymbols) | - [x] [`V2FsList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2fslist) |
+| - [x] [`FindText`](https://dakolli.github.io/opencode-go-kit/api/#func-api-findtext) | - [x] [`V2FsRead`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2fsread) |
+| - [x] [`FormatterStatus`](https://dakolli.github.io/opencode-go-kit/api/#func-api-formatterstatus) | - [x] [`V2HealthGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2healthget) |
+| - [x] [`GlobalDispose`](https://dakolli.github.io/opencode-go-kit/api/#func-api-globaldispose) | - [x] [`V2IntegrationAttemptCancel`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2integrationattemptcancel) |
+| - [x] [`GlobalHealth`](https://dakolli.github.io/opencode-go-kit/api/#func-api-globalhealth) | - [x] [`V2LocationGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2locationget) |
+| - [x] [`InstanceDispose`](https://dakolli.github.io/opencode-go-kit/api/#func-api-instancedispose) | - [x] [`V2PermissionRequestList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2permissionrequestlist) |
+| - [x] [`LspStatus`](https://dakolli.github.io/opencode-go-kit/api/#func-api-lspstatus) | - [x] [`V2PermissionSavedList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2permissionsavedlist) |
+| - [x] [`McpAuthRemove`](https://dakolli.github.io/opencode-go-kit/api/#func-api-mcpauthremove) | - [x] [`V2PermissionSavedRemove`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2permissionsavedremove) |
+| - [x] [`McpConnect`](https://dakolli.github.io/opencode-go-kit/api/#func-api-mcpconnect) | - [x] [`V2PtyConnect`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptyconnect) |
+| - [x] [`McpDisconnect`](https://dakolli.github.io/opencode-go-kit/api/#func-api-mcpdisconnect) | - [x] [`V2PtyConnectToken`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptyconnecttoken) |
+| - [x] [`PathGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-pathget) | - [x] [`V2PtyCreate`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptycreate) |
+| - [x] [`PermissionList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-permissionlist) | - [x] [`V2PtyGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptyget) |
+| - [x] [`ProjectCurrent`](https://dakolli.github.io/opencode-go-kit/api/#func-api-projectcurrent) | - [x] [`V2PtyList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptylist) |
+| - [x] [`ProjectDirectories`](https://dakolli.github.io/opencode-go-kit/api/#func-api-projectdirectories) | - [x] [`V2PtyRemove`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptyremove) |
+| - [x] [`ProjectInitGit`](https://dakolli.github.io/opencode-go-kit/api/#func-api-projectinitgit) | - [x] [`V2PtyUpdate`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2ptyupdate) |
+| - [x] [`ProjectList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-projectlist) | - [x] [`V2QuestionRequestList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2questionrequestlist) |
+| - [x] [`ProviderList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-providerlist) | - [x] [`V2SessionActive`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2sessionactive) |
+| - [x] [`PtyConnect`](https://dakolli.github.io/opencode-go-kit/api/#func-api-ptyconnect) | - [x] [`V2SessionCreate`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2sessioncreate) |
+| - [x] [`PtyConnectToken`](https://dakolli.github.io/opencode-go-kit/api/#func-api-ptyconnecttoken) | - [x] [`V2SkillList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-v2skilllist) |
+| - [x] [`PtyGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-ptyget) | - [x] [`VcsDiff`](https://dakolli.github.io/opencode-go-kit/api/#func-api-vcsdiff) |
+| - [x] [`PtyList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-ptylist) | - [x] [`VcsDiffRaw`](https://dakolli.github.io/opencode-go-kit/api/#func-api-vcsdiffraw) |
+| - [x] [`PtyRemove`](https://dakolli.github.io/opencode-go-kit/api/#func-api-ptyremove) | - [x] [`VcsGet`](https://dakolli.github.io/opencode-go-kit/api/#func-api-vcsget) |
+| - [x] [`PtyShells`](https://dakolli.github.io/opencode-go-kit/api/#func-api-ptyshells) | - [x] [`VcsStatus`](https://dakolli.github.io/opencode-go-kit/api/#func-api-vcsstatus) |
+| - [x] [`QuestionList`](https://dakolli.github.io/opencode-go-kit/api/#func-api-questionlist) |  |
 
 <!-- COVERAGE_END -->

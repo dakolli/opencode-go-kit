@@ -54,14 +54,36 @@ func main() {
 	builder.WriteString(fmt.Sprintf("We have wrapped **%d out of %d** (%0.2f%%) OpenAPI client methods in our clean, typed API wrapper layer.\n\n", len(implemented), total, pct))
 
 	builder.WriteString("### Covered Endpoints\n\n")
-	for _, m := range implemented {
-		builder.WriteString(fmt.Sprintf("- [x] `%s`\n", m))
+	halfImplemented := (len(implemented) + 1) / 2
+	builder.WriteString("| | |\n| --- | --- |\n")
+	for i := 0; i < halfImplemented; i++ {
+		left := implemented[i]
+		leftLink := fmt.Sprintf("- [x] [`%s`](https://dakolli.github.io/opencode-go-kit/api/#func-api-%s)", left, strings.ToLower(left))
+
+		rightLink := ""
+		if i+halfImplemented < len(implemented) {
+			right := implemented[i+halfImplemented]
+			rightLink = fmt.Sprintf("- [x] [`%s`](https://dakolli.github.io/opencode-go-kit/api/#func-api-%s)", right, strings.ToLower(right))
+		}
+
+		builder.WriteString(fmt.Sprintf("| %s | %s |\n", leftLink, rightLink))
 	}
 
 	if len(missing) > 0 {
 		builder.WriteString("\n### Uncovered Endpoints\n\n")
-		for _, m := range missing {
-			builder.WriteString(fmt.Sprintf("- [ ] `%s`\n", m))
+		halfMissing := (len(missing) + 1) / 2
+		builder.WriteString("| | |\n| --- | --- |\n")
+		for i := 0; i < halfMissing; i++ {
+			left := missing[i]
+			leftStr := fmt.Sprintf("- [ ] `%s`", left)
+
+			rightStr := ""
+			if i+halfMissing < len(missing) {
+				right := missing[i+halfMissing]
+				rightStr = fmt.Sprintf("- [ ] `%s`", right)
+			}
+
+			builder.WriteString(fmt.Sprintf("| %s | %s |\n", leftStr, rightStr))
 		}
 	}
 	builder.WriteString("\n<!-- COVERAGE_END -->")

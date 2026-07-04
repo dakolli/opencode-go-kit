@@ -25,6 +25,10 @@ services:
       # Server password set directly in the docker-compose file
       # - OPENCODE_SERVER_PASSWORD=${WORKSPACE_PASSWORD:-pass1}
       - OPENCODE_SERVER_PASSWORD=pass1
+      # - see example opencode-example.jsonc in root of project, If you want to run opencode in a container to use inside docker
+      #   run cmd below and change config to your liking before running docker-compose up
+      # - cp ./opencode-example.jsonc ./volumes/workspace_one/opencode.jsonc
+      - OPENCODE_CONFIG=/workspace/opencode.jsonc
       
     restart: unless-stopped
 

@@ -1,0 +1,291 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    // For Example:
+    // "@franlol/opencode-md-table-formatter@0.0.3",
+    // "@mohak34/opencode-notifier@latest"
+  ],
+  // --- Primary Model Selection ---
+  // The default flagship model for complex coding and reasoning tasks
+  "model": "anthropic/claude-sonnet-4-5",
+  "default_agent": "build",
+
+  // The lightweight model used for fast, cheap sub-tasks like generating session titles
+  "small_model": "anthropic/claude-haiku-4-5",
+  // --- MCP Settings ---
+  // Controls the MCP servers that are available to the agent
+   "mcp": {
+    // "context7": {
+    //   "type": "remote",
+    //   "url": "https://mcp.context7.com/mcp",
+    //   "enabled": true
+    // },
+    // "exa": {
+    //   "type": "remote",
+    //   "url": "https://mcp.exa.ai/mcp",
+    //   "enabled": true,
+    //   "headers": {
+    //     "Authorization": "Bearer ${EXA_API_KEY}"
+    //   }
+    // },
+    // "figma-mcp-desktop": {
+    //   "type": "remote",
+    //   "url": "http://127.0.0.1:3845/mcp"
+    // },
+    // "playwright": {
+    //   "type": "local",
+    //   "command": ["npx", "-y", "@playwright/mcp@latest"],
+    //   "enabled": true
+    // },
+    // "maestro": {
+    //   "type": "local",
+    //   "command": ["maestro", "mcp"],
+    //   "enabled": true
+    // },
+    // "jira": {
+    //   "type": "remote",
+    //   "url": "https://mcp.atlassian.com/v1/mcp",
+    //   "enabled": true
+    // }
+  },
+  // --- Permission Settings ---
+  // Controls which commands are allowed to be executed by the agent
+  "permission": {
+    "webfetch": "ask", 
+    "edit": {
+      "*" : "allow"
+    },
+    "read": {
+      "*" : "allow",
+      "*.env": "deny",       // Explicit guardrails against scraping structural credentials
+      "*.dev.vars": "deny"
+    },
+    "bash": {
+      "*" : "ask",           // Standard verification check loop for generic commands
+      "rm -rf *": "deny",    // Absolute hard block safety rule // 
+      // This may cause issues when running headless in container when ask is preferred. 
+      "git status": "allow"  // Frictionless execution for safe git lookups
+    }
+   
+    // -- STANDARD DOCKER CONTAINER CONTAINS AN ISOLATED WORKSPACE WITH MINIMAL 
+    // PERMISSIONS FOR SECURITY AND ISOLATION, PLEASE USE UNSAFE-CONTAINER 
+    // IF YOU'D LIKE TO USE SUDO/SYSTEM WIDE CMDS. (UNSAFE-UNIMPLEMENTED)
+    // "*": "allow",
+    // "bash": {
+    //   "*": "allow",
+    //   "touch *": "ask",
+    //   "mkdir *": "ask",
+    //   "rm *": "ask",
+    //   "cp *": "ask",
+    //   "mv *": "ask",
+    //   "dd *": "ask",
+    //   "sudo *": "ask",
+    //   "chmod *": "ask",
+    //   "chown *": "ask",
+    //   "curl *": "ask",
+    //   "wget *": "ask",
+    //   "npm install *": "ask",
+    //   "pip install *": "ask",
+    //   "git push": "ask",
+    //   "git reset --hard *": "ask",
+    //   "git clean *": "ask",
+    //   "reboot": "ask",
+    //   "shutdown": "ask",
+    //   "kill *": "ask",
+    //   "killall *": "ask",
+    //   "docker *": "ask",
+    //   "mkfs *": "ask",
+    //   "fdisk *": "ask",
+    //   "parted *": "ask",
+    //   "format *": "ask",
+    //   "git branch -d *": "ask",
+    //   "git branch -D *": "ask",
+    //   "git rebase *": "ask",
+    //   "npm run publish": "ask",
+    //   "brew install *": "ask",
+    //   "brew upgrade *": "ask",
+    //   "ssh *": "ask",
+    //   "scp *": "ask",
+    //   "rsync *": "ask"
+    },
+
+"enabled_providers": ["anthropic", "openai"],
+// "disabled_providers": ["openai", "gemini"],
+"providers": {
+    
+    // 1. ANTHROPIC: Advanced Thinking Configurations
+    "anthropic": {
+      "options": {
+        "timeout": 600000,
+        "chunkTimeout": 30000,
+        "setCacheKey": true
+      },
+      "models": {
+        // Base production target
+        "claude-sonnet-4-5-20250929": {
+          "options": {
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 16000
+            }
+          }
+        },
+        // Custom variant extensions for Claude Opus
+        "claude-opus-4-5": {
+          "variants": {
+            "max-reasoning": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000 // Heavy analytical architectural tasks
+              }
+            },
+            "fast-mode": {
+              "thinking": {
+                "type": "disabled" // Drops thinking overhead for instant structural edits
+              }
+            }
+          }
+        }
+      }
+    },
+
+    // 2. OPENAI: Multi-Model Options & Custom Reasoning Effort Variants
+    "openai": {
+      "options": {
+        "timeout": 300000,
+        "chunkTimeout": 15000
+      },
+      "models": {
+        // Tuning for flagship reasoning engine
+        "gpt-5": {
+          "options": {
+            "reasoningEffort": "high",
+            "textVerbosity": "low",
+            "reasoningSummary": "auto",
+            "include": ["reasoning.encrypted_content"]
+          },
+          // Custom overrides so users can cycle variants via shortcut (Default: Ctrl+T)
+          "variants": {
+            "high-effort": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low-effort": {
+              "reasoningEffort": "low",
+              "textVerbosity": "medium",
+              "reasoningSummary": "auto"
+            }
+          }
+        },
+        // Standard non-reasoning fallback config
+        "gpt-4o": {
+          "options": {
+            "temperature": 0.2
+          }
+        }
+      }
+    }
+  },
+
+
+  // Which agent is used by default across TUI/CLI if none is specified ("build", "plan", or custom)
+  "agent": {
+    // Primary execution architecture agent
+    "build": {
+      "mode": "primary",
+      "model": "anthropic/claude-sonnet-4-5-20250929",
+      // Agents inherit broad permissions, but we can safely expand them per role
+      "permission": {
+        "bash": {
+          "go test ./...": "allow", // Auto-verify loops execute seamlessly without asking
+          "*" : "ask"
+        }
+      }
+    },
+
+    // Senior Architectural Subagent referencing OpenAI custom reasoning variants
+    "architect": {
+      "mode": "subagent",
+      "description": "Deep reasoning model for high-impact refactors and structural planning.",
+      "model": "openai/gpt-5",
+      "variant": "high-effort", // Enforces specific custom variant specified under provider.openai
+      "prompt": "You are a software architect. Focus on clean domain boundaries, concurrency patterns, and microgrid scalability profiles."
+    },
+
+    // Fast-pacing agent utilizing a quick, thinking-disabled variant
+    "patcher": {
+      "mode": "subagent",
+      "description": "Lightweight, snappy edits skipping complex token calculation overhead.",
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "fast-mode", // References the disabled thinking block
+      "prompt": "Quickly write code corrections, simple documentation expansions, or fix single unit tests."
+    }
+  },
+  // --- Core Server Runtime Configuration ---
+  // Controls the behavior of `opencode serve` and `opencode web`
+  "server": {
+    "port": 4096,
+    "hostname": "0.0.0.0", // Binds to all interfaces inside the container
+    "mdns": true,          // Allows local network discovery via mDNS
+    "mdnsDomain": "opencode-kit.local",
+    "cors": [
+      "http://localhost:5173" // Whitelist local web IDE frontends if applicable
+    ]
+  },
+
+  // --- System Environment & Safety ---
+  // The execution shell used for interactive terminals and agent tool calls
+  "shell": "/bin/bash",
+  
+  // Enables a local git-backed tracking system to let users undo/roll back agent file modifications
+  "snapshot": true,
+  
+  // Automatically look for updates to the binary runtime
+  "autoupdate": false, 
+
+  // Conversation sharing privacy setting: "manual" (via /share), "auto", or "disabled"
+  "share": "manual",
+
+  // --- Core Tool Access Switches ---
+  // Broad gates to quickly strip or grant capabilities to the underlying LLM
+  "tools": {
+    "write": true,
+    "bash": true
+  },
+
+  // --- Attachment Controls ---
+  // Normalizes incoming images before sending them to vision-capable models
+  "attachment": {
+    "image": {
+      "auto_resize": true,      // Downscale images exceeding limits rather than throwing errors
+      "max_width": 2000,
+      "max_height": 2000,
+      "max_base64_bytes": 5242880
+    }
+  },
+
+
+  // --- Custom Command Shortcuts ---
+  // Macro templates that map clean CLI phrases directly to complex agent workflows
+  "command": {
+    "test": {
+      "template": "Run the full test suite with coverage report and show any failures. Focus on the failing tests and suggest fixes.",
+      "description": "Execute local unit testing harness",
+      "agent": "build",
+      "model": "anthropic/claude-haiku-4-5"
+    }
+  },
+
+  // --- Experimental Access Policies ---
+  // Fine-grained guardrails to restrict structural usage (e.g., blocking specific API providers)
+  "experimental": {
+    "policies": [
+      {
+        "effect": "allow",
+        "action": "provider.use",
+        "resource": "*"
+      }
+    ]
+  }
+}
