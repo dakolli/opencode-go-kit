@@ -5,6 +5,9 @@
 volumes/workspace_one/*
 !volumes/workspace_one/.gitkeep
 
+
+volumes/workspace_example/*
+!volumes/workspace_example/.gitkeep
 .notes/
 bin/
 

@@ -9,12 +9,11 @@
   // The default flagship model for complex coding and reasoning tasks
   "model": "anthropic/claude-sonnet-4-5",
   "default_agent": "build",
-
   // The lightweight model used for fast, cheap sub-tasks like generating session titles
   "small_model": "anthropic/claude-haiku-4-5",
   // --- MCP Settings ---
   // Controls the MCP servers that are available to the agent
-   "mcp": {
+  "mcp": {
     // "context7": {
     //   "type": "remote",
     //   "url": "https://mcp.context7.com/mcp",
@@ -51,22 +50,21 @@
   // --- Permission Settings ---
   // Controls which commands are allowed to be executed by the agent
   "permission": {
-    "webfetch": "ask", 
+    "webfetch": "ask",
     "edit": {
-      "*" : "allow"
+      "*": "allow"
     },
     "read": {
-      "*" : "allow",
-      "*.env": "deny",       // Explicit guardrails against scraping structural credentials
+      "*": "allow",
+      "*.env": "deny", // Explicit guardrails against scraping structural credentials
       "*.dev.vars": "deny"
     },
     "bash": {
-      "*" : "ask",           // Standard verification check loop for generic commands
-      "rm -rf *": "deny",    // Absolute hard block safety rule // 
+      "*": "ask", // Standard verification check loop for generic commands
+      "rm -rf *": "deny", // Absolute hard block safety rule // 
       // This may cause issues when running headless in container when ask is preferred. 
-      "git status": "allow"  // Frictionless execution for safe git lookups
+      "git status": "allow" // Frictionless execution for safe git lookups
     }
-   
     // -- STANDARD DOCKER CONTAINER CONTAINS AN ISOLATED WORKSPACE WITH MINIMAL 
     // PERMISSIONS FOR SECURITY AND ISOLATION, PLEASE USE UNSAFE-CONTAINER 
     // IF YOU'D LIKE TO USE SUDO/SYSTEM WIDE CMDS. (UNSAFE-UNIMPLEMENTED)
@@ -107,88 +105,98 @@
     //   "ssh *": "ask",
     //   "scp *": "ask",
     //   "rsync *": "ask"
-    },
-
-"enabled_providers": ["anthropic", "openai"],
-// "disabled_providers": ["openai", "gemini"],
-"providers": {
-    
-    // 1. ANTHROPIC: Advanced Thinking Configurations
-    "anthropic": {
+  },
+  "enabled_providers": [
+    "anthropic",
+    "openai"
+  ],
+  // "disabled_providers": ["openai", "gemini"],
+  "provider": {
+    "opencode-go": {
       "options": {
         "timeout": 600000,
         "chunkTimeout": 30000,
-        "setCacheKey": true
-      },
-      "models": {
-        // Base production target
-        "claude-sonnet-4-5-20250929": {
-          "options": {
-            "thinking": {
-              "type": "enabled",
-              "budgetTokens": 16000
-            }
-          }
-        },
-        // Custom variant extensions for Claude Opus
-        "claude-opus-4-5": {
-          "variants": {
-            "max-reasoning": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000 // Heavy analytical architectural tasks
-              }
-            },
-            "fast-mode": {
-              "thinking": {
-                "type": "disabled" // Drops thinking overhead for instant structural edits
-              }
-            }
-          }
-        }
-      }
-    },
-
-    // 2. OPENAI: Multi-Model Options & Custom Reasoning Effort Variants
-    "openai": {
-      "options": {
-        "timeout": 300000,
-        "chunkTimeout": 15000
-      },
-      "models": {
-        // Tuning for flagship reasoning engine
-        "gpt-5": {
-          "options": {
-            "reasoningEffort": "high",
-            "textVerbosity": "low",
-            "reasoningSummary": "auto",
-            "include": ["reasoning.encrypted_content"]
-          },
-          // Custom overrides so users can cycle variants via shortcut (Default: Ctrl+T)
-          "variants": {
-            "high-effort": {
-              "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "low-effort": {
-              "reasoningEffort": "low",
-              "textVerbosity": "medium",
-              "reasoningSummary": "auto"
-            }
-          }
-        },
-        // Standard non-reasoning fallback config
-        "gpt-4o": {
-          "options": {
-            "temperature": 0.2
-          }
-        }
+        "setCacheKey": true,
+        "apiKey": "{env:OPENCODE_KEY}"
       }
     }
+    // 1. ANTHROPIC: Advanced Thinking Configurations
+    // "anthropic": {
+    //   "options": {
+    //     "timeout": 600000,
+    //     "chunkTimeout": 30000,
+    //     "setCacheKey": true,
+    //     "apiKey": "{env:ANTHROPIC_API_KEY}"
+    //   },
+    //   "models": {
+    //     // Base production target
+    //     "claude-sonnet-4-5-20250929": {
+    //       "options": {
+    //         "thinking": {
+    //           "type": "enabled",
+    //           "budgetTokens": 16000
+    //         }
+    //       }
+    //     },
+    //     // Custom variant extensions for Claude Opus
+    //     "claude-opus-4-5": {
+    //       "variants": {
+    //         "max-reasoning": {
+    //           "thinking": {
+    //             "type": "enabled",
+    //             "budgetTokens": 32000 // Heavy analytical architectural tasks
+    //           }
+    //         },
+    //         "fast-mode": {
+    //           "thinking": {
+    //             "type": "disabled" // Drops thinking overhead for instant structural edits
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // },
+    // 2. OPENAI: Multi-Model Options & Custom Reasoning Effort Variants
+    // "openai": {
+    //   "options": {
+    //     "timeout": 300000,
+    //     "chunkTimeout": 15000,
+    //     "apiKey": "{env:OPENAI_API_KEY}"
+    //   },
+    //   "models": {
+    //     // Tuning for flagship reasoning engine
+    //     "gpt-5": {
+    //       "options": {
+    //         "reasoningEffort": "high",
+    //         "textVerbosity": "low",
+    //         "reasoningSummary": "auto",
+    //         "include": [
+    //           "reasoning.encrypted_content"
+    //         ]
+    //       },
+    //       // Custom overrides so users can cycle variants via shortcut (Default: Ctrl+T)
+    //       "variants": {
+    //         "high-effort": {
+    //           "reasoningEffort": "high",
+    //           "textVerbosity": "low",
+    //           "reasoningSummary": "auto"
+    //         },
+    //         "low-effort": {
+    //           "reasoningEffort": "low",
+    //           "textVerbosity": "medium",
+    //           "reasoningSummary": "auto"
+    //         }
+    //       }
+    //     },
+    //     // Standard non-reasoning fallback config
+    //     "gpt-4o": {
+    //       "options": {
+    //         "temperature": 0.2
+    //       }
+    //     }
+    //   }
+    // }
   },
-
-
   // Which agent is used by default across TUI/CLI if none is specified ("build", "plan", or custom)
   "agent": {
     // Primary execution architecture agent
@@ -199,11 +207,10 @@
       "permission": {
         "bash": {
           "go test ./...": "allow", // Auto-verify loops execute seamlessly without asking
-          "*" : "ask"
+          "*": "ask"
         }
       }
     },
-
     // Senior Architectural Subagent referencing OpenAI custom reasoning variants
     "architect": {
       "mode": "subagent",
@@ -212,7 +219,6 @@
       "variant": "high-effort", // Enforces specific custom variant specified under provider.openai
       "prompt": "You are a software architect. Focus on clean domain boundaries, concurrency patterns, and microgrid scalability profiles."
     },
-
     // Fast-pacing agent utilizing a quick, thinking-disabled variant
     "patcher": {
       "mode": "subagent",
@@ -227,64 +233,60 @@
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0", // Binds to all interfaces inside the container
-    "mdns": true,          // Allows local network discovery via mDNS
+    "mdns": true, // Allows local network discovery via mDNS
     "mdnsDomain": "opencode-kit.local",
     "cors": [
       "http://localhost:5173" // Whitelist local web IDE frontends if applicable
     ]
   },
-
   // --- System Environment & Safety ---
   // The execution shell used for interactive terminals and agent tool calls
   "shell": "/bin/bash",
-  
   // Enables a local git-backed tracking system to let users undo/roll back agent file modifications
   "snapshot": true,
-  
   // Automatically look for updates to the binary runtime
-  "autoupdate": false, 
-
+  "autoupdate": false,
   // Conversation sharing privacy setting: "manual" (via /share), "auto", or "disabled"
   "share": "manual",
-
   // --- Core Tool Access Switches ---
   // Broad gates to quickly strip or grant capabilities to the underlying LLM
   "tools": {
     "write": true,
     "bash": true
   },
-
   // --- Attachment Controls ---
   // Normalizes incoming images before sending them to vision-capable models
   "attachment": {
     "image": {
-      "auto_resize": true,      // Downscale images exceeding limits rather than throwing errors
+      "auto_resize": true, // Downscale images exceeding limits rather than throwing errors
       "max_width": 2000,
       "max_height": 2000,
       "max_base64_bytes": 5242880
     }
   },
-
-
   // --- Custom Command Shortcuts ---
   // Macro templates that map clean CLI phrases directly to complex agent workflows
   "command": {
     "test": {
-      "template": "Run the full test suite with coverage report and show any failures. Focus on the failing tests and suggest fixes.",
-      "description": "Execute local unit testing harness",
+      // This would be the equivalent of the command in workspace_example/.opencode/commands/test.md
+      // You can make commands here in this command{} config object or in the .opencode/ file of the workspace
+      // see additional documentation at : https://opencode.ai/docs/commands/ 
+      // This is the prompt that will be sent to the LLM
+      "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
+      // This is shown as the description in the TUI
+      "description": "Run tests with coverage",
       "agent": "build",
-      "model": "anthropic/claude-haiku-4-5"
+      "model": "anthropic/claude-3-5-sonnet-20241022"
     }
   },
-
   // --- Experimental Access Policies ---
   // Fine-grained guardrails to restrict structural usage (e.g., blocking specific API providers)
   "experimental": {
     "policies": [
       {
-        "effect": "allow",
+        "effect": "deny",
         "action": "provider.use",
-        "resource": "*"
+        "resource": "openai"
       }
     ]
   }

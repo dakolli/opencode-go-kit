@@ -46,7 +46,9 @@ run:
 		--name $(PROJECT_NAME)-agent \
 		-p 127.0.0.1:$(HOST_PORT):4096 \
 		-v $(abspath $(VOLUME_PATH)):/workspace \
-		-e OPENCODE_SERVER_PASSWORD=$(PASSWORD) \
+		-e OPENCODE_SERVER_PASSWORD=$(WORKSPACE_PASSWORD) \
+		-e OPENCODE_KEY=$(OPENCODE_KEY) \
+		-e OPENCODE_CONFIG=/workspace/opencode.jsonc \
 		--restart unless-stopped \
 		$(IMAGE_NAME)
 

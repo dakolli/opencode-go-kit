@@ -9,10 +9,11 @@ A Go API for interacting with the OpenCode API.
 ## Optional Docker Opencode containers: 
 - **Docker & Docker Compose**: To build and host the OpenCode agent locally (or connect to your existing opencode)
   
-  If you want to use Opencode in Docker cp config below and fill out the config to your likeing
+  If you want to use Opencode in Docker copy config in root of this repo to example workspace
+  or into whatever workspace/volume you'd like to use should go in a .opencode/ directory.. Then fill out the config to your liking
   See documenation for OpenCode [config](https://opencode.ai/docs/config/)
 ```bashV
-# - cp ./opencode-example.jsonc ./volumes/workspace_one/opencode.jsonc
+# - cp ./opencode-example.jsonc ./volumes/example_workspace/opencode.jsonc
 ```
 ## Installation
 
