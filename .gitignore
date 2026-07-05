@@ -1,14 +1,24 @@
 /.env
 /docker-compose.yml
+.docker/docker-compose.yml
 /public
 
 volumes/workspace_one/*
-!volumes/workspace_one/.gitkeep
 
+.docker/volumes/workspace_one/*
 
 volumes/workspace_example/*
-!volumes/workspace_example/.gitkeep
+
+.docker/volumes/workspace_example/*
+
+.docker/.env
+
 .notes/
 bin/
 
 /vendor/
+/Makefile
+
+/Dockerfile
+
+/.Docker

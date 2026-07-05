@@ -15,7 +15,7 @@ export GROUP_ID
 HOST_PORT ?= 4002
 USERNAME ?= opencode
 WORKSPACE_PASSWORD ?= pass1
-VOLUME_PATH ?= ./volumes/workspace_one
+VOLUME_PATH ?= .docker/volumes/workspace_example
 IMAGE_NAME ?= opencode-go-kit:latest
 PROJECT_NAME ?= opencode-alpha
 
